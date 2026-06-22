@@ -19,7 +19,7 @@ public class GenreService {
         Genre genre = Genre.builder()
                 .name(name)
                 .build();
-        return genreDao.insert(genre);
+        return genreDao.insert(genre).getId();
     }
 
     @Transactional(readOnly = true)
@@ -35,10 +35,9 @@ public class GenreService {
 
     @Transactional
     public void updateGenre(Long id, String name) {
-        Genre genre = Genre.builder()
-                .id(id)
-                .name(name)
-                .build();
+        Genre genre = genreDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Genre not found with id: " + id));
+        genre.setName(name);
         genreDao.update(genre);
     }
 

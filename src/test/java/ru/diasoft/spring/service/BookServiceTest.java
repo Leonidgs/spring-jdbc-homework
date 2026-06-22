@@ -55,6 +55,8 @@ class BookServiceTest {
 
         assertThat(book.getId()).isEqualTo(1L);
         assertThat(book.getTitle()).isEqualTo("Test Book 1");
+        assertThat(book.getAuthor().getName()).isEqualTo("Test Author 1");
+        assertThat(book.getGenre().getName()).isEqualTo("Test Genre 1");
     }
 
     @Test
@@ -81,8 +83,8 @@ class BookServiceTest {
 
         Book updated = bookService.getBookById(1L);
         assertThat(updated.getTitle()).isEqualTo("Updated Book Title");
-        assertThat(updated.getAuthorId()).isEqualTo(2L);
-        assertThat(updated.getGenreId()).isEqualTo(2L);
+        assertThat(updated.getAuthor().getId()).isEqualTo(2L);
+        assertThat(updated.getGenre().getId()).isEqualTo(2L);
     }
 
     @Test

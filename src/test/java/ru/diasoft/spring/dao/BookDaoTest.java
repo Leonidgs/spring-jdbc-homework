@@ -3,17 +3,19 @@ package ru.diasoft.spring.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import ru.diasoft.spring.domain.Author;
 import ru.diasoft.spring.domain.Book;
+import ru.diasoft.spring.domain.Genre;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@JdbcTest
+@DataJpaTest
 @Import({BookDao.class, AuthorDao.class, GenreDao.class})
 @ActiveProfiles("test")
 @DisplayName("DAO для работы с книгами")
@@ -21,6 +23,12 @@ class BookDaoTest {
 
     @Autowired
     private BookDao bookDao;
+
+    @Autowired
+    private AuthorDao authorDao;
+
+    @Autowired
+    private GenreDao genreDao;
 
     @Test
     @DisplayName("должен находить книгу по id")
@@ -30,8 +38,8 @@ class BookDaoTest {
         assertThat(book).isPresent();
         assertThat(book.get().getId()).isEqualTo(1L);
         assertThat(book.get().getTitle()).isEqualTo("Test Book 1");
-        assertThat(book.get().getAuthorId()).isEqualTo(1L);
-        assertThat(book.get().getGenreId()).isEqualTo(1L);
+        assertThat(book.get().getAuthor().getName()).isEqualTo("Test Author 1");
+        assertThat(book.get().getGenre().getName()).isEqualTo("Test Genre 1");
     }
 
     @Test
@@ -53,16 +61,18 @@ class BookDaoTest {
     @Test
     @DisplayName("должен сохранять новую книгу")
     void shouldSaveNewBook() {
+        Author author = authorDao.findById(1L).orElseThrow();
+        Genre genre = genreDao.findById(1L).orElseThrow();
         Book newBook = Book.builder()
                 .title("New Book")
-                .authorId(1L)
-                .genreId(1L)
+                .author(author)
+                .genre(genre)
                 .build();
 
-        Long id = bookDao.insert(newBook);
+        Book saved = bookDao.insert(newBook);
 
-        assertThat(id).isNotNull();
-        Optional<Book> savedBook = bookDao.findById(id);
+        assertThat(saved.getId()).isNotNull();
+        Optional<Book> savedBook = bookDao.findById(saved.getId());
         assertThat(savedBook).isPresent();
         assertThat(savedBook.get().getTitle()).isEqualTo("New Book");
     }
@@ -70,20 +80,20 @@ class BookDaoTest {
     @Test
     @DisplayName("должен обновлять книгу")
     void shouldUpdateBook() {
-        Book book = Book.builder()
-                .id(1L)
-                .title("Updated Book")
-                .authorId(2L)
-                .genreId(2L)
-                .build();
+        Book book = bookDao.findById(1L).orElseThrow();
+        Author author2 = authorDao.findById(2L).orElseThrow();
+        Genre genre2 = genreDao.findById(2L).orElseThrow();
+        book.setTitle("Updated Book");
+        book.setAuthor(author2);
+        book.setGenre(genre2);
 
         bookDao.update(book);
 
         Optional<Book> updatedBook = bookDao.findById(1L);
         assertThat(updatedBook).isPresent();
         assertThat(updatedBook.get().getTitle()).isEqualTo("Updated Book");
-        assertThat(updatedBook.get().getAuthorId()).isEqualTo(2L);
-        assertThat(updatedBook.get().getGenreId()).isEqualTo(2L);
+        assertThat(updatedBook.get().getAuthor().getId()).isEqualTo(2L);
+        assertThat(updatedBook.get().getGenre().getId()).isEqualTo(2L);
     }
 
     @Test

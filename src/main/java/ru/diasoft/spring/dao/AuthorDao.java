@@ -1,71 +1,47 @@
 package ru.diasoft.spring.dao;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import ru.diasoft.spring.domain.Author;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
 public class AuthorDao {
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    @PersistenceContext
+    private EntityManager em;
 
-    private final RowMapper<Author> authorRowMapper = (rs, rowNum) -> Author.builder()
-            .id(rs.getLong("id"))
-            .name(rs.getString("name"))
-            .build();
-
-    public Long insert(Author author) {
-        String sql = "INSERT INTO authors (name) VALUES (:name)";
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("name", author.getName());
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(sql, params, keyHolder);
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    public Author insert(Author author) {
+        em.persist(author);
+        return author;
     }
 
-    public void update(Author author) {
-        String sql = "UPDATE authors SET name = :name WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", author.getId())
-                .addValue("name", author.getName());
-        jdbcTemplate.update(sql, params);
+    public Author update(Author author) {
+        return em.merge(author);
     }
 
     public void deleteById(Long id) {
-        String sql = "DELETE FROM authors WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id);
-        jdbcTemplate.update(sql, params);
+        Author author = em.find(Author.class, id);
+        if (author != null) {
+            em.remove(author);
+        }
     }
 
     public Optional<Author> findById(Long id) {
-        String sql = "SELECT id, name FROM authors WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id);
-        List<Author> authors = jdbcTemplate.query(sql, params, authorRowMapper);
-        return authors.isEmpty() ? Optional.empty() : Optional.of(authors.get(0));
+        return Optional.ofNullable(em.find(Author.class, id));
     }
 
     public List<Author> findAll() {
-        String sql = "SELECT id, name FROM authors";
-        return jdbcTemplate.query(sql, authorRowMapper);
+        return em.createQuery("SELECT a FROM Author a", Author.class).getResultList();
     }
 
     public boolean existsById(Long id) {
-        String sql = "SELECT COUNT(*) FROM authors WHERE id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id);
-        Integer count = jdbcTemplate.queryForObject(sql, params, Integer.class);
-        return count != null && count > 0;
+        Long count = em.createQuery("SELECT COUNT(a) FROM Author a WHERE a.id = :id", Long.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        return count > 0;
     }
 }

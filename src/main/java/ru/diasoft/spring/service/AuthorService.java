@@ -19,7 +19,7 @@ public class AuthorService {
         Author author = Author.builder()
                 .name(name)
                 .build();
-        return authorDao.insert(author);
+        return authorDao.insert(author).getId();
     }
 
     @Transactional(readOnly = true)
@@ -35,10 +35,9 @@ public class AuthorService {
 
     @Transactional
     public void updateAuthor(Long id, String name) {
-        Author author = Author.builder()
-                .id(id)
-                .name(name)
-                .build();
+        Author author = authorDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Author not found with id: " + id));
+        author.setName(name);
         authorDao.update(author);
     }
 

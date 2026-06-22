@@ -3,7 +3,7 @@ package ru.diasoft.spring.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import ru.diasoft.spring.domain.Genre;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@JdbcTest
+@DataJpaTest
 @Import(GenreDao.class)
 @ActiveProfiles("test")
 @DisplayName("DAO для работы с жанрами")
@@ -57,10 +57,10 @@ class GenreDaoTest {
                 .name("New Genre")
                 .build();
 
-        Long id = genreDao.insert(newGenre);
+        Genre saved = genreDao.insert(newGenre);
 
-        assertThat(id).isNotNull();
-        Optional<Genre> savedGenre = genreDao.findById(id);
+        assertThat(saved.getId()).isNotNull();
+        Optional<Genre> savedGenre = genreDao.findById(saved.getId());
         assertThat(savedGenre).isPresent();
         assertThat(savedGenre.get().getName()).isEqualTo("New Genre");
     }
@@ -68,10 +68,8 @@ class GenreDaoTest {
     @Test
     @DisplayName("должен обновлять жанр")
     void shouldUpdateGenre() {
-        Genre genre = Genre.builder()
-                .id(1L)
-                .name("Updated Genre")
-                .build();
+        Genre genre = genreDao.findById(1L).orElseThrow();
+        genre.setName("Updated Genre");
 
         genreDao.update(genre);
 
