@@ -1,3 +1,10 @@
+DELETE FROM books;
+DELETE FROM authors;
+DELETE FROM genres;
+ALTER TABLE authors ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE genres ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE books ALTER COLUMN id RESTART WITH 1;
+
 INSERT INTO authors (name) VALUES ('Leo Tolstoy');
 INSERT INTO authors (name) VALUES ('Fyodor Dostoevsky');
 INSERT INTO authors (name) VALUES ('Anton Chekhov');
