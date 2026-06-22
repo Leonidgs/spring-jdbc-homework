@@ -3,12 +3,12 @@ package ru.diasoft.spring.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.diasoft.spring.dao.AuthorDao;
-import ru.diasoft.spring.dao.BookDao;
-import ru.diasoft.spring.dao.GenreDao;
 import ru.diasoft.spring.domain.Author;
 import ru.diasoft.spring.domain.Book;
 import ru.diasoft.spring.domain.Genre;
+import ru.diasoft.spring.repository.AuthorRepository;
+import ru.diasoft.spring.repository.BookRepository;
+import ru.diasoft.spring.repository.GenreRepository;
 
 import java.util.List;
 
@@ -16,15 +16,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookService {
 
-    private final BookDao bookDao;
-    private final AuthorDao authorDao;
-    private final GenreDao genreDao;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final GenreRepository genreRepository;
 
     @Transactional
     public Long createBook(String title, Long authorId, Long genreId) {
-        Author author = authorDao.findById(authorId)
+        Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new RuntimeException("Author not found with id: " + authorId));
-        Genre genre = genreDao.findById(genreId)
+        Genre genre = genreRepository.findById(genreId)
                 .orElseThrow(() -> new RuntimeException("Genre not found with id: " + genreId));
 
         Book book = Book.builder()
@@ -32,47 +32,47 @@ public class BookService {
                 .author(author)
                 .genre(genre)
                 .build();
-        return bookDao.insert(book).getId();
+        return bookRepository.save(book).getId();
     }
 
     @Transactional(readOnly = true)
     public Book getBookById(Long id) {
-        return bookDao.findById(id)
+        return bookRepository.findByIdWithDetails(id)
                 .orElseThrow(() -> new RuntimeException("Book not found with id: " + id));
     }
 
     @Transactional(readOnly = true)
     public List<Book> getAllBooks() {
-        return bookDao.findAll();
+        return bookRepository.findAllWithDetails();
     }
 
     @Transactional
     public void updateBook(Long id, String title, Long authorId, Long genreId) {
-        Book book = bookDao.findById(id)
+        Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found with id: " + id));
-        Author author = authorDao.findById(authorId)
+        Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new RuntimeException("Author not found with id: " + authorId));
-        Genre genre = genreDao.findById(genreId)
+        Genre genre = genreRepository.findById(genreId)
                 .orElseThrow(() -> new RuntimeException("Genre not found with id: " + genreId));
 
         book.setTitle(title);
         book.setAuthor(author);
         book.setGenre(genre);
-        bookDao.update(book);
+        bookRepository.save(book);
     }
 
     @Transactional
     public void deleteBook(Long id) {
-        bookDao.deleteById(id);
+        bookRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     public List<Book> getBooksByAuthor(Long authorId) {
-        return bookDao.findByAuthorId(authorId);
+        return bookRepository.findByAuthorId(authorId);
     }
 
     @Transactional(readOnly = true)
     public List<Book> getBooksByGenre(Long genreId) {
-        return bookDao.findByGenreId(genreId);
+        return bookRepository.findByGenreId(genreId);
     }
 }
