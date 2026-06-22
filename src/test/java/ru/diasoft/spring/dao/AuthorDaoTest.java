@@ -3,7 +3,7 @@ package ru.diasoft.spring.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import ru.diasoft.spring.domain.Author;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@JdbcTest
+@DataJpaTest
 @Import(AuthorDao.class)
 @ActiveProfiles("test")
 @DisplayName("DAO для работы с авторами")
@@ -57,21 +57,19 @@ class AuthorDaoTest {
                 .name("New Author")
                 .build();
 
-        Long id = authorDao.insert(newAuthor);
+        Author saved = authorDao.insert(newAuthor);
 
-        assertThat(id).isNotNull();
-        Optional<Author> savedAuthor = authorDao.findById(id);
-        assertThat(savedAuthor).isPresent();
-        assertThat(savedAuthor.get().getName()).isEqualTo("New Author");
+        assertThat(saved.getId()).isNotNull();
+        Optional<Author> found = authorDao.findById(saved.getId());
+        assertThat(found).isPresent();
+        assertThat(found.get().getName()).isEqualTo("New Author");
     }
 
     @Test
     @DisplayName("должен обновлять автора")
     void shouldUpdateAuthor() {
-        Author author = Author.builder()
-                .id(1L)
-                .name("Updated Author")
-                .build();
+        Author author = authorDao.findById(1L).orElseThrow();
+        author.setName("Updated Author");
 
         authorDao.update(author);
 

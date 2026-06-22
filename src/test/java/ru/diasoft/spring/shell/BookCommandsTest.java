@@ -30,7 +30,7 @@ class BookCommandsTest {
     void shouldGetBookById() {
         String result = bookCommands.getBook(1L);
 
-        assertThat(result).contains("Test Book 1", "Author ID: 1", "Genre ID: 1");
+        assertThat(result).contains("Test Book 1", "Test Author 1", "Test Genre 1");
     }
 
     @Test

@@ -2,3 +2,6 @@
 1781764857407:genre-list
 1781764864131:book-create -t 'Мастер и Маргарита' -a 5 -g 5
 1781764871471:book-list
+1782117265809:book-create --title "War and Peace" --author-id 1 --genre-id 1
+1782117289946:book-create --title "War and Peace" --author 1 --genre 1
+1782117302814:book-list

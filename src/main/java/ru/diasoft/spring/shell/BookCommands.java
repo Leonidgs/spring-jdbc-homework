@@ -86,7 +86,7 @@ public class BookCommands {
     }
 
     private String formatBook(Book book) {
-        return String.format("ID: %d, Title: %s, Author ID: %d, Genre ID: %d",
-                book.getId(), book.getTitle(), book.getAuthorId(), book.getGenreId());
+        return String.format("ID: %d, Title: %s, Author: %s, Genre: %s",
+                book.getId(), book.getTitle(), book.getAuthor().getName(), book.getGenre().getName());
     }
 }
