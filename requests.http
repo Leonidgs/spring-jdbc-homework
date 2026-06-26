@@ -1,0 +1,50 @@
+### Get all books
+GET http://localhost:8080/api/books
+
+### Get book by id
+GET http://localhost:8080/api/books/8
+
+### Create book
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  "title": "New Book",
+  "authorId": 1,
+  "genreId": 1
+}
+
+### Update book
+PUT http://localhost:8080/api/books/1
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "authorId": 1,
+  "genreId": 2
+}
+
+### Delete book
+DELETE http://localhost:8080/api/books/1
+
+### Get comments for book
+GET http://localhost:8080/api/books/1/comments
+
+### Add comment
+POST http://localhost:8080/api/books/1/comments
+Content-Type: application/json
+
+{
+  "text": "Great book!"
+}
+
+### Update comment
+PUT http://localhost:8080/api/books/1/comments/1
+Content-Type: application/json
+
+{
+  "text": "Updated comment"
+}
+
+### Delete comment
+DELETE http://localhost:8080/api/books/1/comments/1
