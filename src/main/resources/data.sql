@@ -2,10 +2,12 @@ DELETE FROM comments;
 DELETE FROM books;
 DELETE FROM authors;
 DELETE FROM genres;
+DELETE FROM users;
 ALTER TABLE comments ALTER COLUMN id RESTART WITH 1;
 ALTER TABLE authors ALTER COLUMN id RESTART WITH 1;
 ALTER TABLE genres ALTER COLUMN id RESTART WITH 1;
 ALTER TABLE books ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE users ALTER COLUMN id RESTART WITH 1;
 
 INSERT INTO authors (name) VALUES ('Leo Tolstoy');
 INSERT INTO authors (name) VALUES ('Fyodor Dostoevsky');
@@ -26,3 +28,7 @@ INSERT INTO books (title, author_id, genre_id) VALUES ('The Brothers Karamazov',
 INSERT INTO books (title, author_id, genre_id) VALUES ('The Cherry Orchard', 3, 3);
 INSERT INTO books (title, author_id, genre_id) VALUES ('Eugene Onegin', 4, 4);
 INSERT INTO books (title, author_id, genre_id) VALUES ('The Master and Margarita', 5, 5);
+
+-- password: password (BCrypt encoded)
+INSERT INTO users (username, password, role) VALUES ('admin', '$2a$10$dXJ3SW6G7P50lGmMQgel3uO9bTjKa5T5byP2LR7fBSCarT4GRpcG6', 'ROLE_ADMIN');
+INSERT INTO users (username, password, role) VALUES ('user', '$2a$10$dXJ3SW6G7P50lGmMQgel3uO9bTjKa5T5byP2LR7fBSCarT4GRpcG6', 'ROLE_USER');
