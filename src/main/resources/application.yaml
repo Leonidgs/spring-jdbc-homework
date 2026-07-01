@@ -22,7 +22,23 @@ spring:
   shell:
     interactive:
       enabled: false
+  data:
+    rest:
+      base-path: /datarest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,logfile,env,beans
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      external-file: logs/spring-jdbc-homework.log
 
 logging:
+  file:
+    name: logs/spring-jdbc-homework.log
   level:
     org.springframework.jdbc: DEBUG
