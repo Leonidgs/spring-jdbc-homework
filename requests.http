@@ -1,0 +1,145 @@
+### === BOOKS ===
+
+### Get all books
+GET http://localhost:8080/api/books
+
+### Get book by id
+GET http://localhost:8080/api/books/8
+
+### Create book
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  "title": "New Book",
+  "authorId": 1,
+  "genreId": 1
+}
+
+### Update book
+PUT http://localhost:8080/api/books/1
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "authorId": 1,
+  "genreId": 2
+}
+
+### Delete book
+DELETE http://localhost:8080/api/books/1
+
+### === AUTHORS ===
+
+### Get all authors
+GET http://localhost:8080/api/authors
+
+### Get author by id
+GET http://localhost:8080/api/authors/1
+
+### Create author
+POST http://localhost:8080/api/authors
+Content-Type: application/json
+
+{
+  "name": "New Author"
+}
+
+### Update author
+PUT http://localhost:8080/api/authors/1
+Content-Type: application/json
+
+{
+  "name": "Updated Author"
+}
+
+### Delete author
+DELETE http://localhost:8080/api/authors/1
+
+### === GENRES ===
+
+### Get all genres
+GET http://localhost:8080/api/genres
+
+### Get genre by id
+GET http://localhost:8080/api/genres/1
+
+### Create genre
+POST http://localhost:8080/api/genres
+Content-Type: application/json
+
+{
+  "name": "New Genre"
+}
+
+### Update genre
+PUT http://localhost:8080/api/genres/1
+Content-Type: application/json
+
+{
+  "name": "Updated Genre"
+}
+
+### Delete genre
+DELETE http://localhost:8080/api/genres/1
+
+### === COMMENTS ===
+
+### Get comments for book
+GET http://localhost:8080/api/books/1/comments
+
+### Get comment by id
+GET http://localhost:8080/api/comments/1
+
+### Create comment for book
+POST http://localhost:8080/api/books/1/comments
+Content-Type: application/json
+
+{
+  "text": "Great book!"
+}
+
+### Update comment
+PUT http://localhost:8080/api/comments/1
+Content-Type: application/json
+
+{
+  "text": "Updated comment"
+}
+
+### Delete comment
+DELETE http://localhost:8080/api/comments/1
+
+### === ACTUATOR ===
+
+### Actuator index
+GET http://localhost:8080/actuator
+
+### Health with details
+GET http://localhost:8080/actuator/health
+
+### Custom Library health indicator
+GET http://localhost:8080/actuator/health/library
+
+### Metrics
+GET http://localhost:8080/actuator/metrics
+
+### Logfile
+GET http://localhost:8080/actuator/logfile
+
+### Info
+GET http://localhost:8080/actuator/info
+
+### === SPRING DATA REST (HATEOAS) ===
+
+### Books via Spring Data REST
+GET http://localhost:8080/datarest/books
+
+### Authors via Spring Data REST
+GET http://localhost:8080/datarest/authors
+
+### Genres via Spring Data REST
+GET http://localhost:8080/datarest/genres
+
+### Comments via Spring Data REST
+GET http://localhost:8080/datarest/comments
