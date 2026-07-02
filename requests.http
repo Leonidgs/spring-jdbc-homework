@@ -109,3 +109,37 @@ Content-Type: application/json
 
 ### Delete comment
 DELETE http://localhost:8080/api/comments/1
+
+### === ACTUATOR ===
+
+### Actuator index
+GET http://localhost:8080/actuator
+
+### Health with details
+GET http://localhost:8080/actuator/health
+
+### Custom Library health indicator
+GET http://localhost:8080/actuator/health/library
+
+### Metrics
+GET http://localhost:8080/actuator/metrics
+
+### Logfile
+GET http://localhost:8080/actuator/logfile
+
+### Info
+GET http://localhost:8080/actuator/info
+
+### === SPRING DATA REST (HATEOAS) ===
+
+### Books via Spring Data REST
+GET http://localhost:8080/datarest/books
+
+### Authors via Spring Data REST
+GET http://localhost:8080/datarest/authors
+
+### Genres via Spring Data REST
+GET http://localhost:8080/datarest/genres
+
+### Comments via Spring Data REST
+GET http://localhost:8080/datarest/comments
