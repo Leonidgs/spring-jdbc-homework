@@ -1,0 +1,23 @@
+### === BOOK CLIENT SERVICE (port 8081) ===
+### Этот сервис обращается к book-service (port 8080) через RestTemplate
+
+### Get all books (через клиент)
+GET http://localhost:8081/api/client/books
+
+### Get book by id (через клиент)
+GET http://localhost:8081/api/client/books/1
+
+### Get comments for book (через клиент)
+GET http://localhost:8081/api/client/books/1/comments
+
+### Get all authors (через клиент)
+GET http://localhost:8081/api/client/authors
+
+### Get author by id (через клиент)
+GET http://localhost:8081/api/client/authors/1
+
+### Get all genres (через клиент)
+GET http://localhost:8081/api/client/genres
+
+### Get genre by id (через клиент)
+GET http://localhost:8081/api/client/genres/1

@@ -1,6 +1,7 @@
 package ru.diasoft.spring.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.diasoft.spring.domain.Author;
