@@ -17,3 +17,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+  shell:
+    interactive:
+      enabled: false
+
+jwt:
+  secret: dGhpcyBpcyBhIHNlY3JldCBrZXkgZm9yIGp3dCB0b2tlbiBnZW5lcmF0aW9uIGluIHNwcmluZyBib290IGFwcA==
+  expiration-ms: 3600000

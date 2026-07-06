@@ -23,6 +23,10 @@ spring:
     interactive:
       enabled: false
 
+jwt:
+  secret: dGhpcyBpcyBhIHNlY3JldCBrZXkgZm9yIGp3dCB0b2tlbiBnZW5lcmF0aW9uIGluIHNwcmluZyBib290IGFwcA==
+  expiration-ms: 3600000
+
 logging:
   level:
     org.springframework.jdbc: DEBUG

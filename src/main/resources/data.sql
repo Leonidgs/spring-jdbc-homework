@@ -30,5 +30,5 @@ INSERT INTO books (title, author_id, genre_id) VALUES ('Eugene Onegin', 4, 4);
 INSERT INTO books (title, author_id, genre_id) VALUES ('The Master and Margarita', 5, 5);
 
 -- password: password (BCrypt encoded)
-INSERT INTO users (username, password, role) VALUES ('admin', '$2a$10$dXJ3SW6G7P50lGmMQgel3uO9bTjKa5T5byP2LR7fBSCarT4GRpcG6', 'ROLE_ADMIN');
-INSERT INTO users (username, password, role) VALUES ('user', '$2a$10$dXJ3SW6G7P50lGmMQgel3uO9bTjKa5T5byP2LR7fBSCarT4GRpcG6', 'ROLE_USER');
+INSERT INTO users (username, password, role) VALUES ('admin', '$2a$10$DbPs2C3IWeVqWcSgjiVf5ei9eFSjiBfsGEFb3dC61Y7GJdOm.vsri', 'ROLE_ADMIN');
+INSERT INTO users (username, password, role) VALUES ('user', '$2a$10$DbPs2C3IWeVqWcSgjiVf5ei9eFSjiBfsGEFb3dC61Y7GJdOm.vsri', 'ROLE_USER');

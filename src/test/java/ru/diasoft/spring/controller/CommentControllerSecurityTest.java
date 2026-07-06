@@ -26,7 +26,7 @@ class CommentControllerSecurityTest {
     @Test
     void getCommentsByBook_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(get("/api/books/1/comments"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -34,13 +34,13 @@ class CommentControllerSecurityTest {
         mockMvc.perform(post("/api/books/1/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"text\":\"Test\"}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void getCommentById_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(get("/api/comments/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -48,13 +48,13 @@ class CommentControllerSecurityTest {
         mockMvc.perform(put("/api/comments/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"text\":\"Test\"}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void deleteComment_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(delete("/api/comments/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
