@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+book-service:
+  url: http://localhost:8080
+
+spring:
+  application:
+    name: book-client-service
+  cache:
+    type: simple
