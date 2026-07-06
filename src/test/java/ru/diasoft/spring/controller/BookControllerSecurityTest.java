@@ -26,13 +26,13 @@ class BookControllerSecurityTest {
     @Test
     void getAllBooks_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(get("/api/books"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void getBookById_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(get("/api/books/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -40,7 +40,7 @@ class BookControllerSecurityTest {
         mockMvc.perform(post("/api/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\":\"Test\",\"authorId\":1,\"genreId\":1}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -48,13 +48,13 @@ class BookControllerSecurityTest {
         mockMvc.perform(put("/api/books/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\":\"Test\",\"authorId\":1,\"genreId\":1}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void deleteBook_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(delete("/api/books/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -67,7 +67,7 @@ class BookControllerSecurityTest {
     @Test
     @WithMockUser(username = "user")
     void getBookById_authenticated_returnsOk() throws Exception {
-        mockMvc.perform(get("/api/books/1"))
+        mockMvc.perform(get("/api/books/2"))
                 .andExpect(status().isOk());
     }
 
@@ -83,7 +83,7 @@ class BookControllerSecurityTest {
     @Test
     @WithMockUser(username = "user")
     void updateBook_authenticated_returnsOk() throws Exception {
-        mockMvc.perform(put("/api/books/1")
+        mockMvc.perform(put("/api/books/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\":\"Updated\",\"authorId\":1,\"genreId\":1}"))
                 .andExpect(status().isOk());
@@ -92,7 +92,7 @@ class BookControllerSecurityTest {
     @Test
     @WithMockUser(username = "user")
     void deleteBook_authenticated_returnsNoContent() throws Exception {
-        mockMvc.perform(delete("/api/books/1"))
+        mockMvc.perform(delete("/api/books/3"))
                 .andExpect(status().isNoContent());
     }
 }

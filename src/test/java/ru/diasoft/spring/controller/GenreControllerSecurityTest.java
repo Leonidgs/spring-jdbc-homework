@@ -26,13 +26,13 @@ class GenreControllerSecurityTest {
     @Test
     void getAllGenres_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(get("/api/genres"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void getGenreById_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(get("/api/genres/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -40,7 +40,7 @@ class GenreControllerSecurityTest {
         mockMvc.perform(post("/api/genres")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Test\"}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -48,13 +48,13 @@ class GenreControllerSecurityTest {
         mockMvc.perform(put("/api/genres/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Test\"}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void deleteGenre_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(delete("/api/genres/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test

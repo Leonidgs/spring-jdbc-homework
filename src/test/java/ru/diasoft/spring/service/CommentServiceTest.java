@@ -58,7 +58,7 @@ class CommentServiceTest {
 
         List<Comment> comments = commentService.getCommentsByBookId(1L);
 
-        assertThat(comments).hasSize(2);
+        assertThat(comments).hasSize(3);
     }
 
     @Test

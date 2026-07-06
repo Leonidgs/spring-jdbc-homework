@@ -26,13 +26,13 @@ class AuthorControllerSecurityTest {
     @Test
     void getAllAuthors_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(get("/api/authors"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void getAuthorById_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(get("/api/authors/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -40,7 +40,7 @@ class AuthorControllerSecurityTest {
         mockMvc.perform(post("/api/authors")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Test\"}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -48,13 +48,13 @@ class AuthorControllerSecurityTest {
         mockMvc.perform(put("/api/authors/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Test\"}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void deleteAuthor_unauthenticated_returnsRedirect() throws Exception {
         mockMvc.perform(delete("/api/authors/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isForbidden());
     }
 
     @Test

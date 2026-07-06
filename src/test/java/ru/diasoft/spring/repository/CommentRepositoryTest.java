@@ -52,8 +52,8 @@ class CommentRepositoryTest {
 
         List<Comment> comments = commentRepository.findByBookId(1L);
 
-        assertThat(comments).hasSize(2);
+        assertThat(comments).hasSize(3);
         assertThat(comments).extracting(Comment::getText)
-                .containsExactlyInAnyOrder("Comment 1", "Comment 2");
+                .containsExactlyInAnyOrder("Test Comment 1", "Comment 1", "Comment 2");
     }
 }

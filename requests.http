@@ -1,7 +1,32 @@
-### === BOOKS ===
+### === AUTH (JWT) ===
+
+### Login as admin (получить токен)
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "password"
+}
+
+### Login as user (получить токен)
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "password"
+}
+
+### Проверка без токена (должен вернуть 403)
+GET http://localhost:8080/api/books
+
+### === BOOKS (с JWT токеном) ===
+### Подставьте полученный токен вместо <TOKEN>
 
 ### Get all books
 GET http://localhost:8080/api/books
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzgzMzI2MzI2LCJleHAiOjE3ODMzMjk5MjZ9.ckaKZasEM6ERaUsfnxN8Rmk9kAlM2BJi44B1TJ0wqZnX4GswBCSnnvRewofXwk5WCJyofnGYwHIt8qQsIDzHnA
 
 ### Get book by id
 GET http://localhost:8080/api/books/8
