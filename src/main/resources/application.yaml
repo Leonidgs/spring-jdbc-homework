@@ -22,9 +22,29 @@ spring:
   shell:
     interactive:
       enabled: false
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: book-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.type.mapping: "bookCreateRequest:ru.diasoft.spring.kafka.dto.BookCreateRequestEvent,bookCreatedEvent:ru.diasoft.spring.kafka.dto.BookCreatedEvent"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: "bookCreateRequest:ru.diasoft.spring.kafka.dto.BookCreateRequestEvent,bookCreatedEvent:ru.diasoft.spring.kafka.dto.BookCreatedEvent"
 
 book-service:
   url: http://localhost:8080
+
+kafka:
+  topics:
+    book-create-requests: book-create-requests
+    book-events: book-events
 
 logging:
   level:
