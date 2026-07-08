@@ -109,3 +109,6 @@ Content-Type: application/json
 
 ### Delete comment
 DELETE http://localhost:8080/api/comments/1
+
+### Create book
+POST http://localhost:8081/api/client/books/kafka?title=NewBook&authorId=1&genreId=1

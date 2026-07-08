@@ -16,6 +16,7 @@ import ru.diasoft.spring.client.dto.AuthorDto;
 import ru.diasoft.spring.client.dto.BookDto;
 import ru.diasoft.spring.client.dto.CommentDto;
 import ru.diasoft.spring.client.dto.GenreDto;
+import ru.diasoft.spring.client.kafka.BookRequestProducer;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ import java.util.List;
 public class BookServiceClient {
 
     private final RestTemplate restTemplate;
+    private final BookRequestProducer bookRequestProducer;
 
     @Value("${book-service.url}")
     private String bookServiceUrl;
@@ -56,6 +58,12 @@ public class BookServiceClient {
         log.info("Creating book '{}' via {}", title, bookServiceUrl);
         var request = java.util.Map.of("title", title, "authorId", authorId, "genreId", genreId);
         return restTemplate.postForObject(bookServiceUrl + "/api/books", request, BookDto.class);
+    }
+
+    @CacheEvict(value = "books", allEntries = true)
+    public void createBookViaKafka(String title, Long authorId, Long genreId) {
+        log.info("Sending create-book request via Kafka: title='{}', authorId={}, genreId={}", title, authorId, genreId);
+        bookRequestProducer.sendCreateBookRequest(title, authorId, genreId);
     }
 
     // === Authors ===
