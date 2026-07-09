@@ -1,0 +1,100 @@
+### ============================================================================
+### Проверка домашнего задания HW16: Circuit Breaker / Hystrix / Resilience4j
+### ============================================================================
+###
+### Подготовка:
+###   1. Запустить library-service (порт 8080) — это целевой внешний сервис.
+###   2. Запустить book-client-service (порт 8081) — он ходит в library-service
+###      через Feign и оборачивает вызовы в Resilience4j Circuit Breaker.
+###
+### ============================================================================
+
+### 1. Проверка actuator health book-client-service
+GET http://localhost:8081/actuator/health
+
+### 2. Проверка состояния circuit breaker (должен быть CLOSED при запущенном сервисе)
+GET http://localhost:8081/actuator/circuitbreakers
+
+### 3. Успешный запрос: получить все книги (проксируется в library-service)
+GET http://localhost:8081/api/books
+
+### 4. Успешный запрос: получить книгу по id
+GET http://localhost:8081/api/books/1
+
+### 5. Успешный запрос: получить всех авторов
+GET http://localhost:8081/api/authors
+
+### 6. Успешный запрос: получить все жанры
+GET http://localhost:8081/api/genres
+
+### 7. Успешный запрос: получить комментарии к книге
+GET http://localhost:8081/api/books/1/comments
+
+### ============================================================================
+### Проверка fallback и открытия Circuit Breaker
+### ============================================================================
+###
+### Шаги:
+###   1. Остановить library-service (порт 8080).
+###   2. Выполнить запросы 8–12 подряд (минимум 5), чтобы накопить ошибки.
+###   3. После 5-й неудачной попытки Circuit Breaker перейдет в OPEN.
+###   4. Запросы 13+ должны вернуть fallback: пустой список или заглушку DTO.
+###   5. В actuator circuitbreakers состояние будет OPEN.
+###
+### ============================================================================
+
+### 8. Запрос при недоступном library-service (попытка 1)
+GET http://localhost:8081/api/books
+
+### 9. Запрос при недоступном library-service (попытка 2)
+GET http://localhost:8081/api/books
+
+### 10. Запрос при недоступном library-service (попытка 3)
+GET http://localhost:8081/api/books
+
+### 11. Запрос при недоступном library-service (попытка 4)
+GET http://localhost:8081/api/books
+
+### 12. Запрос при недоступном library-service (попытка 5) — после него CB откроется
+GET http://localhost:8081/api/books
+
+### 13. Circuit Breaker уже OPEN — должен сработать fallback (пустой список)
+GET http://localhost:8081/api/books
+
+### 14. Fallback для получения книги по id (заглушка с title "N/A — book-service unavailable")
+GET http://localhost:8081/api/books/1
+
+### 15. Fallback для получения авторов (пустой список)
+GET http://localhost:8081/api/authors
+
+### 16. Fallback для получения автора по id (заглушка с name "N/A — book-service unavailable")
+GET http://localhost:8081/api/authors/1
+
+### 17. Fallback для получения жанров (пустой список)
+GET http://localhost:8081/api/genres
+
+### 18. Fallback для получения комментариев к книге (пустой список)
+GET http://localhost:8081/api/books/1/comments
+
+### 19. Проверка состояния circuit breaker — ожидается OPEN
+GET http://localhost:8081/actuator/circuitbreakers
+
+### 20. Проверка событий circuit breaker
+GET http://localhost:8081/actuator/circuitbreakerevents
+
+### ============================================================================
+### Восстановление сервиса
+### ============================================================================
+###
+### После включения library-service обратно Circuit Breaker перейдет в
+### HALF_OPEN, затем в CLOSED, и запросы снова будут проксироваться.
+### По умолчанию время ожидания в OPEN состоянии: 10 секунд.
+###
+### ============================================================================
+
+### 21. Подождать ~10 секунд и выполнить запрос — CB должен перейти в HALF_OPEN/CLOSED
+GET http://localhost:8081/api/books
+
+### 22. Проверка health после восстановления
+GET http://localhost:8081/actuator/health
+

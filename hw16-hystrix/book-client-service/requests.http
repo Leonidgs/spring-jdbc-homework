@@ -1,0 +1,125 @@
+### === BOOKS (via book-client-service on port 8081) ===
+
+### Get all books
+GET http://localhost:8081/api/books
+
+### Get book by id
+GET http://localhost:8081/api/books/1
+
+### Create book
+POST http://localhost:8081/api/books
+Content-Type: application/json
+
+{
+  "title": "New Book via Client",
+  "authorId": 1,
+  "genreId": 1
+}
+
+### Update book
+PUT http://localhost:8081/api/books/1
+Content-Type: application/json
+
+{
+  "title": "Updated via Client",
+  "authorId": 1,
+  "genreId": 2
+}
+
+### Delete book
+DELETE http://localhost:8081/api/books/1
+
+### === AUTHORS (via book-client-service on port 8081) ===
+
+### Get all authors
+GET http://localhost:8081/api/authors
+
+### Get author by id
+GET http://localhost:8081/api/authors/1
+
+### Create author
+POST http://localhost:8081/api/authors
+Content-Type: application/json
+
+{
+  "name": "New Author via Client"
+}
+
+### Update author
+PUT http://localhost:8081/api/authors/1
+Content-Type: application/json
+
+{
+  "name": "Updated Author via Client"
+}
+
+### Delete author
+DELETE http://localhost:8081/api/authors/1
+
+### === GENRES (via book-client-service on port 8081) ===
+
+### Get all genres
+GET http://localhost:8081/api/genres
+
+### Get genre by id
+GET http://localhost:8081/api/genres/1
+
+### Create genre
+POST http://localhost:8081/api/genres
+Content-Type: application/json
+
+{
+  "name": "New Genre via Client"
+}
+
+### Update genre
+PUT http://localhost:8081/api/genres/1
+Content-Type: application/json
+
+{
+  "name": "Updated Genre via Client"
+}
+
+### Delete genre
+DELETE http://localhost:8081/api/genres/1
+
+### === COMMENTS (via book-client-service on port 8081) ===
+
+### Get comments for book
+GET http://localhost:8081/api/books/1/comments
+
+### Get comment by id
+GET http://localhost:8081/api/comments/1
+
+### Create comment for book
+POST http://localhost:8081/api/books/1/comments
+Content-Type: application/json
+
+{
+  "text": "Great book (via client)!"
+}
+
+### Update comment
+PUT http://localhost:8081/api/comments/1
+Content-Type: application/json
+
+{
+  "text": "Updated comment via client"
+}
+
+### Delete comment
+DELETE http://localhost:8081/api/comments/1
+
+### === CIRCUIT BREAKER MONITORING ===
+
+### Check circuit breaker health
+GET http://localhost:8081/actuator/health
+
+### View circuit breaker state
+GET http://localhost:8081/actuator/circuitbreakers
+
+### View circuit breaker events
+GET http://localhost:8081/actuator/circuitbreakerevents
+
+###
+GET http://localhost:8081/api/books
